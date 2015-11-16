@@ -420,16 +420,28 @@ if [ -z "$ARB_LIB" ]; then
       Darwin)
          ARB_LIBNAME="libarb.dylib"
 	 ARB_LIB="libarb-$ARB_MAJOR.$ARB_MINOR.$ARB_PATCH.dylib"
-         EXTRA_SHARED_FLAGS="-install_name $PREFIX/lib/$ARB_LIB -compatibility_version $ARB_MAJOR.$ARB_MINOR -current_version $ARB_MAJOR.$ARB_MINOR.$ARB_PATCH";;
+         EXTRA_SHARED_FLAGS="-install_name $PREFIX/lib/$ARB_LIB -compatibility_version $ARB_MAJOR.$ARB_MINOR -current_version $ARB_MAJOR.$ARB_MINOR.$ARB_PATCH"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$FLINT_LIB_DIR"
+         ;;
       CYGWIN* | MINGW*)
          ARB_LIBNAME="libarb.dll"
 	 ARB_LIB="libarb-$ARB_MAJOR.dll"
-	 EXTRA_SHARED_FLAGS="-static-libgcc -shared -Wl,--export-all-symbols -Wl,-soname,libarb-$ARB_MAJOR.dll.$ARB_MINOR.$ARB_PATCH";;
+	 EXTRA_SHARED_FLAGS="-static-libgcc -shared -Wl,--export-all-symbols -Wl,-soname,libarb-$ARB_MAJOR.dll.$ARB_MINOR.$ARB_PATCH"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$FLINT_LIB_DIR"
+         ;;
       *)
          ARB_LIBNAME="libarb.so"
 	 ARB_LIB="libarb.so.$ARB_MAJOR.$ARB_MINOR.$ARB_PATCH"
 	 EXTRA_SHARED_FLAGS="-Wl,-soname,libarb.so.$ARB_MAJOR"
-	 ARB_SOLIB=1;;
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$GMP_LIB_DIR"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$MPFR_LIB_DIR"
+         EXTRA_SHARED_FLAGS="$EXTRA_SHARED_FLAGS -Wl,-rpath,$FLINT_LIB_DIR"
+	 ARB_SOLIB=1
+         ;;
    esac
 fi
 
